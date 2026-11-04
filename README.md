@@ -44,7 +44,46 @@ personal-finance-analyzer/
     └── js/
         └── dashboard.js
 ```
+## Installation and Setup
 
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ayechanmaw990-collab/personal-finance-analyzer.git
+cd personal-finance-analyzer
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+### 3. Activate the virtual environment
+
+Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+### 4. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Run the application
+
+```bash
+python app.py
+```
+
+Open your browser and visit:
+
+```text
+http://127.0.0.1:5000
+```
 ## What I Learned
 
 - Developing web applications using Python and Flask
