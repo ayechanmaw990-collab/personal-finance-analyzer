@@ -106,7 +106,7 @@ Developed as a personal portfolio project.
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](dashboard.png)
 
 ### Budget Management
-![Budget Management](screenshots/budget.png)
+![Budget Management](budget.png)
