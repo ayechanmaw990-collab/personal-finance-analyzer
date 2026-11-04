@@ -103,3 +103,10 @@ http://127.0.0.1:5000
 ## Author
 
 Developed as a personal portfolio project.
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Budget Management
+![Budget Management](screenshots/budget.png)
