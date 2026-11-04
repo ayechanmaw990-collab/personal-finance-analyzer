@@ -110,3 +110,35 @@ Developed as a personal portfolio project.
 
 ### Budget Management
 ![Budget Management](budget.png)
+
+## 日本語
+
+### プロジェクト概要
+
+Personal Finance Analyzer は、Python と Flask を使用して開発した個人向けの家計管理Webアプリケーションです。
+
+収入・支出の登録や編集、削除、月別の収支確認、予算管理などの機能を実装しました。また、Chart.js を使用して、月別の収支やカテゴリー別の支出をグラフで可視化しています。
+
+### 主な機能
+
+- 収入・支出の登録、編集、削除
+- 収入・支出・残高の表示
+- 月別の収支グラフ
+- カテゴリー別の支出グラフ
+- 月別・カテゴリー別の予算管理
+- 予算の使用額と残額の確認
+
+### 使用技術
+
+- Python
+- Flask
+- SQLite
+- HTML / CSS / JavaScript
+- Bootstrap
+- Chart.js
+
+### 開発を通して学んだこと
+
+Flaskを使ったWebアプリケーションの開発、SQLiteによるデータベース管理、CRUD機能の実装、Chart.jsによるデータの可視化について学びました。
+
+また、HTML・CSS・JavaScriptを分離し、保守しやすい構成を意識して開発しました。
