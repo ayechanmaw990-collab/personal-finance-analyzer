@@ -1,0 +1,216 @@
+
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb !important;
+    color: #263238;
+}
+
+/* Navbar */
+.navbar {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.navbar-brand {
+    letter-spacing: 0.3px;
+}
+
+.nav-link {
+    margin-left: 12px;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #ffffff !important;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Tables */
+.table {
+    vertical-align: middle;
+}
+
+.table thead th {
+    background-color: #f1f4f9;
+    color: #495057;
+    font-size: 14px;
+}
+
+/* Form */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #6c8cff;
+    box-shadow: 0 0 0 0.2rem rgba(108, 140, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    main.container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+}
+
+    .summary-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+        transition: transform 0.2s, box-shadow 0.2s;
+        overflow: hidden;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .income-card { border-left: 4px solid #198754; }
+    .expense-card { border-left: 4px solid #dc3545; }
+    .balance-card { border-left: 4px solid #0d6efd; }
+
+    .summary-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .income-icon { background: #e8f5ee; color: #198754; }
+    .expense-icon { background: #fdebed; color: #dc3545; }
+    .balance-icon { background: #eaf1ff; color: #0d6efd; }
+
+    .dashboard-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+    }
+
+    .period-label, .transaction-count {
+        background: #edf3ff;
+        color: #0d6efd;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .chart-container {
+        height: 340px;
+        position: relative;
+    }
+
+    .expense-chart-container {
+        max-width: 430px;
+        height: 340px;
+        margin: auto;
+        position: relative;
+    }
+
+    .transaction-table {
+        margin-bottom: 0;
+    }
+
+    .transaction-table thead th {
+        background: #f8f9fc;
+        color: #6c757d;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 14px;
+        border-bottom: 1px solid #e9ecef;
+        white-space: nowrap;
+    }
+
+    .transaction-table tbody td {
+        padding: 15px 14px;
+        border-bottom: 1px solid #f0f1f3;
+        font-size: 14px;
+    }
+
+    .transaction-table tbody tr:hover {
+        background: #fafbff;
+    }
+
+    .type-badge {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .income-badge { background: #e8f5ee; color: #198754; }
+    .expense-badge { background: #fdebed; color: #dc3545; }
+
+    .btn-edit {
+        color: #0d6efd;
+        border: 1px solid #cfe0ff;
+        background: #fff;
+    }
+
+    .btn-edit:hover {
+        background: #0d6efd;
+        color: white;
+    }
+
+    .btn-delete {
+        color: #dc3545;
+        border: 1px solid #f5c2c7;
+        background: #fff;
+    }
+
+    .btn-delete:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 50px 10px;
+    }
+
+    .empty-icon {
+        font-size: 35px;
+        color: #adb5bd;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 280px;
+        }
+
+        .expense-chart-container {
+            height: 280px;
+        }
+
+        .dashboard-card .card-body {
+            padding: 18px !important;
+        }
+    }

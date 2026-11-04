@@ -1,0 +1,454 @@
+
+{% extends "base.html" %}
+
+{% block title %}Budget Management{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h2 class="fw-bold">Budget Management</h2>
+            <p class="text-muted mb-0">
+                Plan and manage your monthly spending.
+            </p>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+            ← Dashboard
+        </a>
+    </div>
+
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    <!-- Select Month -->
+    <div class="card shadow-sm border-0 p-3 mb-4">
+        <form method="GET" action="{{ url_for('budget') }}">
+            <div class="row align-items-end g-3">
+
+                <div class="col-md-4">
+                    <label for="month" class="form-label fw-bold">
+                        Select Month
+                    </label>
+
+                    <input
+                        type="month"
+                        class="form-control"
+                        id="month"
+                        name="month"
+                        value="{{ selected_month }}"
+                        required>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        View
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Monthly Budget Overview -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+
+        <h5 class="fw-bold mb-4">
+            Monthly Budget Overview
+        </h5>
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-4">
+                <p class="text-muted mb-1">Monthly Budget</p>
+                <h3 class="fw-bold text-primary">
+                    ¥{{ "{:,.0f}".format(monthly_budget) }}
+                </h3>
+            </div>
+
+            <div class="col-md-4">
+                <p class="text-muted mb-1">Total Spent</p>
+                <h3 class="fw-bold text-danger">
+                    ¥{{ "{:,.0f}".format(monthly_spent) }}
+                </h3>
+            </div>
+
+            <div class="col-md-4">
+                <p class="text-muted mb-1">Remaining</p>
+
+                <h3 class="fw-bold {% if monthly_remaining < 0 %}text-danger{% else %}text-success{% endif %}">
+                    ¥{{ "{:,.0f}".format(monthly_remaining) }}
+                </h3>
+            </div>
+
+        </div>
+
+
+        <!-- Monthly Progress -->
+        <div class="d-flex justify-content-between mb-2">
+            <strong>Budget Usage</strong>
+
+            <strong>
+                {{ "%.1f"|format(monthly_percent) }}%
+            </strong>
+        </div>
+
+        {% if monthly_percent >= 100 %}
+            <progress
+                class="budget-progress progress-danger"
+                value="100"
+                max="100">
+            </progress>
+
+            <div class="alert alert-danger mt-3 mb-0">
+                <strong>Over Budget!</strong>
+                You have exceeded your monthly budget.
+            </div>
+
+        {% elif monthly_percent >= 80 %}
+            <progress
+                class="budget-progress progress-warning"
+                value="{{ monthly_percent }}"
+                max="100">
+            </progress>
+
+            <div class="alert alert-warning mt-3 mb-0">
+                <strong>Warning!</strong>
+                You are approaching your monthly budget limit.
+            </div>
+
+        {% else %}
+            <progress
+                class="budget-progress progress-success"
+                value="{{ monthly_percent }}"
+                max="100">
+            </progress>
+
+            <div class="alert alert-success mt-3 mb-0">
+                You are within your monthly budget.
+            </div>
+        {% endif %}
+
+    </div>
+
+
+    <!-- Set Monthly Budget -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+
+        <h5 class="fw-bold mb-3">
+            Set Monthly Budget
+        </h5>
+
+        <form method="POST" action="{{ url_for('budget') }}">
+
+            <input type="hidden" name="action" value="monthly">
+            <input type="hidden" name="month" value="{{ selected_month }}">
+
+            <div class="row align-items-end g-3">
+
+                <div class="col-md-8">
+                    <label for="monthly_amount" class="form-label">
+                        Monthly Budget Amount (JPY)
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="monthly_amount"
+                        name="amount"
+                        min="1"
+                        step="1"
+                        placeholder="Example: 80000"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Save Monthly Budget
+                    </button>
+                </div>
+
+            </div>
+
+            <small class="text-muted d-block mt-2">
+                Saving a new amount will update the existing monthly budget.
+            </small>
+
+        </form>
+
+    </div>
+
+
+    <!-- Set Category Budget -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+
+        <h5 class="fw-bold mb-3">
+            Set Category Budget
+        </h5>
+
+        <form method="POST" action="{{ url_for('budget') }}">
+
+            <input type="hidden" name="action" value="category">
+            <input type="hidden" name="month" value="{{ selected_month }}">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-5">
+                    <label for="category" class="form-label">
+                        Category
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="category"
+                        name="category"
+                        placeholder="Example: Food"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="category_amount" class="form-label">
+                        Budget Amount (JPY)
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="category_amount"
+                        name="amount"
+                        min="1"
+                        step="1"
+                        placeholder="Example: 20000"
+                        required>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-success w-100">
+                        Save Category Budget
+                    </button>
+                </div>
+
+            </div>
+
+            <small class="text-muted d-block mt-2">
+                Use the same category name as your transactions.
+                Saving the same category again updates its budget.
+            </small>
+
+        </form>
+
+    </div>
+
+
+    <!-- Category Budget Overview -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+
+        <h5 class="fw-bold mb-4">
+            Category Budget Overview
+        </h5>
+
+        {% if category_budgets %}
+
+            {% for item in category_budgets %}
+
+                <div class="border rounded-3 p-3 mb-3">
+
+                    <!-- Category Header -->
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+
+                        <div>
+                            <h6 class="fw-bold mb-1">
+                                {{ item.category }}
+                            </h6>
+
+                            <small class="text-muted">
+                                Spent: ¥{{ "{:,.0f}".format(item.spent) }}
+                                /
+                                Budget: ¥{{ "{:,.0f}".format(item.amount) }}
+                            </small>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            {% if item.percent >= 100 %}
+                                <span class="badge bg-danger">
+                                    {{ "%.1f"|format(item.percent) }}%
+                                </span>
+
+                            {% elif item.percent >= 80 %}
+                                <span class="badge bg-warning text-dark">
+                                    {{ "%.1f"|format(item.percent) }}%
+                                </span>
+
+                            {% else %}
+                                <span class="badge bg-success">
+                                    {{ "%.1f"|format(item.percent) }}%
+                                </span>
+                            {% endif %}
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('delete_category_budget', budget_id=item.id) }}"
+                                onsubmit="return confirm('Delete this category budget?');">
+
+                                <input
+                                    type="hidden"
+                                    name="month"
+                                    value="{{ selected_month }}">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Category Progress -->
+                    {% if item.percent >= 100 %}
+
+                        <progress
+                            class="budget-progress progress-danger"
+                            value="100"
+                            max="100">
+                        </progress>
+
+                        <small class="text-danger d-block mt-2 fw-bold">
+                            Over Budget!
+                        </small>
+
+                    {% elif item.percent >= 80 %}
+
+                        <progress
+                            class="budget-progress progress-warning"
+                            value="{{ item.percent }}"
+                            max="100">
+                        </progress>
+
+                        <small class="text-warning d-block mt-2 fw-bold">
+                            Approaching Budget Limit
+                        </small>
+
+                    {% else %}
+
+                        <progress
+                            class="budget-progress progress-success"
+                            value="{{ item.percent }}"
+                            max="100">
+                        </progress>
+
+                        <small class="text-success d-block mt-2 fw-bold">
+                            Within Budget
+                        </small>
+
+                    {% endif %}
+
+
+                    <!-- Remaining -->
+                    <div class="d-flex justify-content-between mt-2">
+
+                        <small class="text-muted">
+                            Remaining
+                        </small>
+
+                        <strong class="{% if item.remaining < 0 %}text-danger{% else %}text-success{% endif %}">
+                            ¥{{ "{:,.0f}".format(item.remaining) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="text-center text-muted py-4">
+
+                <h6>No Category Budgets Yet</h6>
+
+                <p class="mb-0">
+                    Add your first category budget above.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- Progress Bar Styling -->
+<style>
+
+.budget-progress {
+    width: 100%;
+    height: 14px;
+    display: block;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #e9ecef;
+}
+
+.budget-progress::-webkit-progress-bar {
+    background-color: #e9ecef;
+    border-radius: 20px;
+}
+
+.progress-success::-webkit-progress-value {
+    background-color: #198754;
+    border-radius: 20px;
+}
+
+.progress-warning::-webkit-progress-value {
+    background-color: #ffc107;
+    border-radius: 20px;
+}
+
+.progress-danger::-webkit-progress-value {
+    background-color: #dc3545;
+    border-radius: 20px;
+}
+
+.progress-success::-moz-progress-bar {
+    background-color: #198754;
+}
+
+.progress-warning::-moz-progress-bar {
+    background-color: #ffc107;
+}
+
+.progress-danger::-moz-progress-bar {
+    background-color: #dc3545;
+}
+
+</style>
+
+{% endblock %}

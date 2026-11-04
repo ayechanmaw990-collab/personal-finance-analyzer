@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Transaction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Edit Transaction</h1>
+
+        <form method="POST">
+
+            <label>Type</label>
+
+            <select name="type" required>
+                <option value="income"
+                    {% if transaction["type"] == "income" %}selected{% endif %}>
+                    Income
+                </option>
+
+                <option value="expense"
+                    {% if transaction["type"] == "expense" %}selected{% endif %}>
+                    Expense
+                </option>
+            </select>
+
+
+            <label>Category</label>
+
+            <input
+                type="text"
+                name="category"
+                value="{{ transaction['category'] }}"
+                required
+            >
+
+
+            <label>Amount</label>
+
+            <input
+                type="number"
+                name="amount"
+                min="0.01"
+                step="0.01"
+                value="{{ transaction['amount'] }}"
+                required
+            >
+
+
+            <label>Description</label>
+
+            <input
+                type="text"
+                name="description"
+                value="{{ transaction['description'] or '' }}"
+            >
+
+
+            <label>Date</label>
+
+            <input
+                type="date"
+                name="transaction_date"
+                value="{{ transaction['transaction_date'] }}"
+                required
+            >
+
+
+            <button type="submit">Update Transaction</button>
+
+            <a href="{{ url_for('index') }}">Cancel</a>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
